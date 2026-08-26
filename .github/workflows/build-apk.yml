@@ -28,7 +28,7 @@ jobs:
         run: flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release --dart-define=SUPABASE_URL=https://dipgysgcwtrvvkyvybmk.supabase.co/ --dart-define=SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpcGd5c2djd3RydnZreXZ5Ym1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDE2MDksImV4cCI6MjEwMzMxNzYwOX0.xpJVcGFeSq0Zc_hU5PH0TgDehBmL6tzV5yjwBwwKpO4
+        run: flutter build apk --release --dart-define=SUPABASE_URL=https://dipgysgcwtrvvkyvybmk.supabase.co/ --dart-define=SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpcGd5c2djd3RydnZreXZ5Ym1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDE2MDksImV4cCI6MjEwMzMxNzYwOX0.xpJVcGFeSq0Zc_hU5PH0TgDehBmL6tzV5yjwBwwKpO4 --dart-define=CLOUDINARY_CLOUD_NAME=hnunt5cn --dart-define=CLOUDINARY_UPLOAD_PRESET=gurudarshan
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
