@@ -1,0 +1,46 @@
+name: cmum
+description: "GURU DARSHAN - Events & Media Application"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Supabase
+  supabase_flutter: ^2.17.2
+
+  # State Management
+  flutter_riverpod: ^2.6.1
+
+  # Routing
+  go_router: ^14.8.1
+
+  # UI Components
+  google_fonts: ^6.2.1
+  cached_network_image: ^3.4.1
+  photo_view: ^0.15.0
+  carousel_slider: ^5.0.0
+  url_launcher: ^6.3.1
+  skeletonizer: ^1.4.2
+
+  # YouTube Player
+  youtube_player_iframe: ^5.2.0
+
+  # Formatting
+  intl: ^0.19.0
+
+  # Icons
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

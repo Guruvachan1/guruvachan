@@ -1,0 +1,3 @@
+@echo off
+echo Starting GURU DARSHAN App...
+flutter run -d edge --dart-define=SUPABASE_URL=https://dipgysgcwtrvvkyvybmk.supabase.co/ --dart-define=SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpcGd5c2djd3RydnZreXZ5Ym1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDE2MDksImV4cCI6MjEwMzMxNzYwOX0.xpJVcGFeSq0Zc_hU5PH0TgDehBmL6tzV5yjwBwwKpO4
