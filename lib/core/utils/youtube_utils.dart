@@ -3,24 +3,26 @@ class YouTubeUtils {
 
   /// All supported YouTube URL patterns
   static final List<RegExp> _patterns = [
-    // Standard watch URLs
-    RegExp(r'(?:https?://)?(?:www\.)?youtube\.com/watch\?v=([a-zA-Z0-9_-]{11})'),
-    // Short URLs
-    RegExp(r'(?:https?://)?youtu\.be/([a-zA-Z0-9_-]{11})'),
+    // Standard watch URLs with any query parameter order
+    RegExp(r'[?&]v=([a-zA-Z0-9_-]{11})'),
+    // Short URLs (youtu.be/xxx)
+    RegExp(r'youtu\.be/([a-zA-Z0-9_-]{11})'),
     // Embed URLs
-    RegExp(r'(?:https?://)?(?:www\.)?youtube\.com/embed/([a-zA-Z0-9_-]{11})'),
-    // Nocookie embed URLs
-    RegExp(r'(?:https?://)?(?:www\.)?youtube-nocookie\.com/embed/([a-zA-Z0-9_-]{11})'),
+    RegExp(r'youtube(?:-nocookie)?\.com/embed/([a-zA-Z0-9_-]{11})'),
     // Shorts URLs
-    RegExp(r'(?:https?://)?(?:www\.)?youtube\.com/shorts/([a-zA-Z0-9_-]{11})'),
-    // Mobile URLs
-    RegExp(r'(?:https?://)?m\.youtube\.com/watch\?v=([a-zA-Z0-9_-]{11})'),
+    RegExp(r'youtube\.com/shorts/([a-zA-Z0-9_-]{11})'),
+    // Live stream URLs
+    RegExp(r'youtube\.com/live/([a-zA-Z0-9_-]{11})'),
+    // Direct 11-char ID
+    RegExp(r'^([a-zA-Z0-9_-]{11})$'),
   ];
 
   /// Extracts video ID from any YouTube URL format
   static String? extractVideoId(String url) {
+    if (url.trim().isEmpty) return null;
+    final cleanUrl = url.trim();
     for (final pattern in _patterns) {
-      final match = pattern.firstMatch(url);
+      final match = pattern.firstMatch(cleanUrl);
       if (match != null && match.groupCount >= 1) {
         return match.group(1);
       }
