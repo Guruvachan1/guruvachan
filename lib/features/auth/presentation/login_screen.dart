@@ -64,10 +64,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        actions: [
+          TextButton.icon(
+            onPressed: () => context.go('/home'),
+            icon: const Icon(Icons.arrow_forward_rounded, size: 16),
+            label: const Text('Skip'),
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             child: Form(
               key: _formKey,
               child: Column(
@@ -75,27 +86,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Logo (Diya)
-                  Container(
-                    width: 80,
-                    height: 80,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [colorScheme.primary, colorScheme.tertiary],
+                  Center(
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [colorScheme.primary, colorScheme.tertiary],
+                        ),
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        '🪔',
-                        style: TextStyle(fontSize: 40),
+                      child: const Center(
+                        child: Text(
+                          '🪔',
+                          style: TextStyle(fontSize: 40),
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 28),
 
                   // Title
                   Text(
                     'Welcome Back',
+                    textAlign: TextAlign.center,
                     style: textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -103,11 +117,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   const SizedBox(height: 8),
                   Text(
                     'Sign in to continue',
+                    textAlign: TextAlign.center,
                     style: textTheme.bodyLarge?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 32),
 
                   // Email
                   TextFormField(
@@ -185,7 +200,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           : const Text('LOGIN'),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
 
                   // Sign Up Link
                   Row(
@@ -202,6 +217,34 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: const Text('SIGN UP'),
                       ),
                     ],
+                  ),
+
+                  // Skip / Guest Option
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      Expanded(child: Divider(color: colorScheme.outlineVariant)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          'OR',
+                          style: textTheme.labelSmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(child: Divider(color: colorScheme.outlineVariant)),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton.icon(
+                    onPressed: () => context.go('/home'),
+                    icon: const Icon(Icons.person_outline_rounded, size: 18),
+                    label: const Text(
+                      'Skip sign-in & explore as Guest',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ],
               ),

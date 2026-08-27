@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../../core/widgets/loading_widget.dart';
 import '../../../core/widgets/error_widget.dart';
 import '../../../core/utils/date_formatter.dart';
-import '../../../models/profile.dart';
 import '../providers/profile_provider.dart';
 import '../../auth/providers/auth_provider.dart';
 
@@ -27,7 +26,50 @@ class ProfileScreen extends ConsumerWidget {
         ),
         data: (profile) {
           if (profile == null) {
-            return const AppErrorWidget(message: 'Profile not found');
+            return Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 48,
+                      backgroundColor: colorScheme.primaryContainer.withValues(alpha: 0.5),
+                      child: Icon(
+                        Icons.person_outline_rounded,
+                        size: 48,
+                        color: colorScheme.primary,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Guest Visitor',
+                      style: textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Sign in to manage your profile and access full account features.',
+                      textAlign: TextAlign.center,
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton.icon(
+                        onPressed: () => context.push('/login'),
+                        icon: const Icon(Icons.login_rounded),
+                        label: const Text('SIGN IN / SIGN UP'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
 
           final initials = profile.fullName.isNotEmpty

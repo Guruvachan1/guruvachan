@@ -215,10 +215,10 @@ CREATE POLICY "admin_update_profiles"
 -- HOME BANNERS POLICIES
 -- --------------------------------------------------------
 
--- All authenticated users can read active banners
+-- All users (including unregistered visitors) can read active banners
 CREATE POLICY "users_read_active_banners"
   ON public.home_banners FOR SELECT
-  TO authenticated
+  TO anon, authenticated
   USING (is_active = true);
 
 -- Admin can read all banners (including inactive)
@@ -248,10 +248,10 @@ CREATE POLICY "admin_delete_banners"
 -- EVENTS POLICIES
 -- --------------------------------------------------------
 
--- Users can read active events
+-- All users (including unregistered visitors) can read active events
 CREATE POLICY "users_read_active_events"
   ON public.events FOR SELECT
-  TO authenticated
+  TO anon, authenticated
   USING (is_active = true);
 
 -- Admin can read all events
@@ -281,10 +281,10 @@ CREATE POLICY "admin_delete_events"
 -- EVENT PHOTOS POLICIES
 -- --------------------------------------------------------
 
--- Users can read all photos (of active events handled at app level)
+-- All users can read all photos
 CREATE POLICY "users_read_photos"
   ON public.event_photos FOR SELECT
-  TO authenticated
+  TO anon, authenticated
   USING (true);
 
 -- Admin full CRUD on photos
@@ -308,10 +308,10 @@ CREATE POLICY "admin_delete_photos"
 -- EVENT VIDEOS POLICIES
 -- --------------------------------------------------------
 
--- Users can read all videos
+-- All users can read all videos
 CREATE POLICY "users_read_videos"
   ON public.event_videos FOR SELECT
-  TO authenticated
+  TO anon, authenticated
   USING (true);
 
 -- Admin full CRUD on videos
@@ -335,10 +335,10 @@ CREATE POLICY "admin_delete_videos"
 -- NOTIFICATIONS POLICIES
 -- --------------------------------------------------------
 
--- All authenticated users can read notifications
+-- All users can read notifications
 CREATE POLICY "users_read_notifications"
   ON public.notifications FOR SELECT
-  TO authenticated
+  TO anon, authenticated
   USING (true);
 
 -- Only admin can create notifications
