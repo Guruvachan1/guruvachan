@@ -32,6 +32,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       _isYouTube = true;
       _controller = YoutubePlayerController(
         params: const YoutubePlayerParams(
+          origin: 'https://www.youtube.com',
           showFullscreenButton: true,
           showControls: true,
           mute: false,
