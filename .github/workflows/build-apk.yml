@@ -27,6 +27,19 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Generate Release Keystore
+        run: |
+          keytool -genkeypair \
+            -v \
+            -keystore android/app/upload-keystore.jks \
+            -alias gurudarshan \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass "gurudarshan123" \
+            -keypass "gurudarshan123" \
+            -dname "CN=Guru Darshan, OU=App, O=Guru Darshan, L=Mumbai, ST=Maharashtra, C=IN"
+
       - name: Build APK
         run: flutter build apk --release --dart-define=SUPABASE_URL=https://dipgysgcwtrvvkyvybmk.supabase.co/ --dart-define=SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpcGd5c2djd3RydnZreXZ5Ym1rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDE2MDksImV4cCI6MjEwMzMxNzYwOX0.xpJVcGFeSq0Zc_hU5PH0TgDehBmL6tzV5yjwBwwKpO4 --dart-define=CLOUDINARY_CLOUD_NAME=hnunt5cn --dart-define=CLOUDINARY_UPLOAD_PRESET=gurudarshan
 

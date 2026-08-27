@@ -74,7 +74,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Logo
+                  // Logo (Diya)
                   Container(
                     width: 80,
                     height: 80,
@@ -84,10 +84,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const Icon(
-                      Icons.celebration_rounded,
-                      size: 40,
-                      color: Colors.white,
+                    child: const Center(
+                      child: Text(
+                        '🪔',
+                        style: TextStyle(fontSize: 40),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 32),

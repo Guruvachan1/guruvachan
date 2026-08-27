@@ -14,7 +14,7 @@ class AppConstants {
   AppConstants._();
 
   static const appName = 'GURU DARSHAN';
-  static const appTagline = 'Events & Media';
+  static const appTagline = 'by Radhvena Technologies';
 
   // Pagination
   static const defaultPageSize = 20;

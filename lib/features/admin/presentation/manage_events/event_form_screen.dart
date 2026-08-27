@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/utils/url_validator.dart';
-import '../../../../core/widgets/cached_image.dart';
+import '../../../../core/widgets/image_picker_field.dart';
 import '../../../events/providers/events_provider.dart';
 
 class EventFormScreen extends ConsumerStatefulWidget {
@@ -97,8 +96,6 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Scaffold(
       appBar: AppBar(title: Text(_isEditing ? 'Edit Event' : 'Create Event')),
       body: SingleChildScrollView(
@@ -134,33 +131,24 @@ class _EventFormScreenState extends ConsumerState<EventFormScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              TextFormField(
+              ImagePickerField(
                 controller: _bannerUrlController,
-                decoration: const InputDecoration(labelText: 'Banner Image URL'),
-                validator: (v) => UrlValidator.validateOptionalUrl(v, fieldName: 'Banner URL'),
-                onChanged: (_) => setState(() {}),
+                label: 'Banner Image',
+                hint: 'Upload banner from device or enter URL',
+                folder: 'guru_darshan/events/banners',
+                previewHeight: 120,
+                onChanged: () => setState(() {}),
               ),
-              if (UrlValidator.isValidUrl(_bannerUrlController.text)) ...[
-                const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedImage(imageUrl: _bannerUrlController.text.trim(), height: 120, width: double.infinity),
-                ),
-              ],
               const SizedBox(height: 16),
-              TextFormField(
+              ImagePickerField(
                 controller: _thumbnailUrlController,
-                decoration: const InputDecoration(labelText: 'Thumbnail URL'),
-                validator: (v) => UrlValidator.validateOptionalUrl(v, fieldName: 'Thumbnail URL'),
-                onChanged: (_) => setState(() {}),
+                label: 'Thumbnail Image',
+                hint: 'Upload thumbnail from device or enter URL',
+                folder: 'guru_darshan/events/thumbnails',
+                previewHeight: 80,
+                previewWidth: 80,
+                onChanged: () => setState(() {}),
               ),
-              if (UrlValidator.isValidUrl(_thumbnailUrlController.text)) ...[
-                const SizedBox(height: 8),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedImage(imageUrl: _thumbnailUrlController.text.trim(), height: 80, width: 80),
-                ),
-              ],
               const SizedBox(height: 16),
               SwitchListTile(
                 title: const Text('Featured Event'),

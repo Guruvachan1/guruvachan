@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 /// Cloudinary configuration and upload service.
 ///
@@ -28,9 +28,21 @@ class CloudinaryConfig {
   static String get _uploadUrl =>
       'https://api.cloudinary.com/v1_1/$_cloudName/image/upload';
 
-  /// Upload a single image file to Cloudinary (unsigned).
-  /// Returns the secure URL on success, throws on failure.
-  static Future<String> uploadImage(File imageFile, {String? folder}) async {
+  /// Upload an XFile (from image_picker) to Cloudinary (unsigned).
+  /// Works across all platforms (Android APK, iOS, Web/Edge).
+  static Future<String> uploadXFile(XFile xFile, {String? folder}) async {
+    final bytes = await xFile.readAsBytes();
+    final filename = xFile.name.isNotEmpty ? xFile.name : 'image.jpg';
+    return uploadBytes(bytes, filename: filename, folder: folder);
+  }
+
+  /// Upload raw image bytes to Cloudinary (unsigned).
+  /// Fully cross-platform without dart:io dependency.
+  static Future<String> uploadBytes(
+    Uint8List bytes, {
+    String filename = 'image.jpg',
+    String? folder,
+  }) async {
     if (!isConfigured) {
       throw Exception(
         'Cloudinary not configured. Pass CLOUDINARY_CLOUD_NAME and '
@@ -40,7 +52,7 @@ class CloudinaryConfig {
 
     final request = http.MultipartRequest('POST', Uri.parse(_uploadUrl))
       ..fields['upload_preset'] = _uploadPreset
-      ..files.add(await http.MultipartFile.fromPath('file', imageFile.path));
+      ..files.add(http.MultipartFile.fromBytes('file', bytes, filename: filename));
 
     if (folder != null && folder.isNotEmpty) {
       request.fields['folder'] = folder;

@@ -27,7 +27,12 @@ class HomeScreen extends ConsumerWidget {
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.celebration_rounded, size: 20, color: Colors.white),
+              child: const Center(
+                child: Text(
+                  '🪔',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
             ),
             const SizedBox(width: 10),
             Text(

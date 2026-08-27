@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -109,9 +108,8 @@ class _ManageEventPhotosScreenState extends ConsumerState<ManageEventPhotosScree
     for (final xFile in images) {
       try {
         // Upload to Cloudinary
-        final imageFile = File(xFile.path);
-        final cloudinaryUrl = await CloudinaryConfig.uploadImage(
-          imageFile,
+        final cloudinaryUrl = await CloudinaryConfig.uploadXFile(
+          xFile,
           folder: 'guru_darshan/events/${widget.eventId}',
         );
 

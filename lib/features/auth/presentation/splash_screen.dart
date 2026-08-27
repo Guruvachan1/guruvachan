@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../config/supabase_config.dart';
-import '../../../models/profile.dart';
 import '../providers/auth_provider.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -91,7 +90,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // App icon
+                  // App icon (Diya / Oil Lamp)
                   Container(
                     width: 120,
                     height: 120,
@@ -104,12 +103,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                           blurRadius: 30,
                           offset: const Offset(0, 10),
                         ),
+                        BoxShadow(
+                          color: Colors.amber.withValues(alpha: 0.35),
+                          blurRadius: 25,
+                          spreadRadius: 2,
+                        ),
                       ],
                     ),
-                    child: Icon(
-                      Icons.celebration_rounded,
-                      size: 60,
-                      color: colorScheme.primary,
+                    child: const Center(
+                      child: Text(
+                        '🪔',
+                        style: TextStyle(fontSize: 64),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -123,10 +128,11 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Events & Media',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.white.withValues(alpha: 0.8),
+                    'by Radhvena Technologies',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.white.withValues(alpha: 0.85),
                           letterSpacing: 1,
+                          fontWeight: FontWeight.w500,
                         ),
                   ),
                   const SizedBox(height: 48),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/utils/url_validator.dart';
-import '../../../../core/widgets/cached_image.dart';
+import '../../../../core/widgets/image_picker_field.dart';
 import '../../../home/providers/home_provider.dart';
 
 class BannerFormScreen extends ConsumerStatefulWidget {
@@ -104,28 +104,15 @@ class _BannerFormScreenState extends ConsumerState<BannerFormScreen> {
                 decoration: const InputDecoration(labelText: 'Subtitle (optional)'),
               ),
               const SizedBox(height: 16),
-              TextFormField(
+              ImagePickerField(
                 controller: _imageUrlController,
-                decoration: const InputDecoration(
-                  labelText: 'Image URL',
-                  hintText: 'https://example.com/image.jpg',
-                ),
-                validator: (v) => UrlValidator.validateUrl(v, fieldName: 'Image URL'),
-                onChanged: (_) => setState(() {}),
+                label: 'Banner Image',
+                hint: 'Upload banner from device or enter URL',
+                folder: 'guru_darshan/banners',
+                isRequired: true,
+                previewHeight: 160,
+                onChanged: () => setState(() {}),
               ),
-              // Image Preview
-              if (UrlValidator.isValidUrl(_imageUrlController.text)) ...[
-                const SizedBox(height: 12),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: CachedImage(
-                    imageUrl: _imageUrlController.text.trim(),
-                    height: 150,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ],
               const SizedBox(height: 16),
               TextFormField(
                 controller: _actionUrlController,
