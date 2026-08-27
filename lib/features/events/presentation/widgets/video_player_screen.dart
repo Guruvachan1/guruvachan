@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart' as ytp;
-import 'package:youtube_player_iframe/youtube_player_iframe.dart' as yti;
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import '../../../../core/utils/youtube_utils.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
@@ -20,8 +18,7 @@ class VideoPlayerScreen extends StatefulWidget {
 }
 
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  ytp.YoutubePlayerController? _mobileController;
-  yti.YoutubePlayerController? _webController;
+  late final YoutubePlayerController _controller;
   String? _videoId;
   bool _isYouTube = false;
 
@@ -29,41 +26,29 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   void initState() {
     super.initState();
     _videoId = YouTubeUtils.extractVideoId(widget.videoUrl) ??
-        yti.YoutubePlayerController.convertUrlToId(widget.videoUrl);
+        YoutubePlayerController.convertUrlToId(widget.videoUrl);
 
     if (_videoId != null) {
       _isYouTube = true;
-      if (kIsWeb) {
-        _webController = yti.YoutubePlayerController(
-          params: const yti.YoutubePlayerParams(
-            showFullscreenButton: true,
-            showControls: true,
-            mute: false,
-            showVideoAnnotations: false,
-            enableJavaScript: true,
-            playsInline: true,
-            strictRelatedVideos: false,
-          ),
-        )..loadVideoById(videoId: _videoId!);
-      } else {
-        _mobileController = ytp.YoutubePlayerController(
-          initialVideoId: _videoId!,
-          flags: const ytp.YoutubePlayerFlags(
-            autoPlay: true,
-            mute: false,
-            enableCaption: true,
-            showLiveFullscreenButton: true,
-            useHybridComposition: true,
-          ),
-        );
-      }
+      _controller = YoutubePlayerController(
+        params: const YoutubePlayerParams(
+          showFullscreenButton: true,
+          showControls: true,
+          mute: false,
+          showVideoAnnotations: false,
+          enableJavaScript: true,
+          playsInline: true,
+          strictRelatedVideos: false,
+        ),
+      )..loadVideoById(videoId: _videoId!);
     }
   }
 
   @override
   void dispose() {
-    _mobileController?.dispose();
-    _webController?.close();
+    if (_isYouTube) {
+      _controller.close();
+    }
     super.dispose();
   }
 
@@ -129,132 +114,53 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       );
     }
 
-    // ── Web Player ──
-    if (kIsWeb && _webController != null) {
-      return yti.YoutubePlayerScaffold(
-        controller: _webController!,
-        aspectRatio: 16 / 9,
-        builder: (context, player) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text(widget.title.isNotEmpty ? widget.title : 'YouTube Video'),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.open_in_new_rounded),
-                  tooltip: 'Open in YouTube',
-                  onPressed: _openYouTubeApp,
-                ),
-              ],
-            ),
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(color: Colors.black, child: player),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (widget.title.isNotEmpty) ...[
-                          Text(
-                            widget.title,
-                            style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 12),
-                        ],
-                        OutlinedButton.icon(
-                          onPressed: _openYouTubeApp,
-                          icon: const Icon(Icons.play_circle_fill_rounded, color: Colors.red),
-                          label: const Text('Watch on YouTube'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-
-    // ── Mobile Native Player (Android / iOS) ──
-    return ytp.YoutubePlayerBuilder(
-      player: ytp.YoutubePlayer(
-        controller: _mobileController!,
-        showVideoProgressIndicator: true,
-        progressIndicatorColor: Colors.red,
-        progressColors: const ytp.ProgressBarColors(
-          playedColor: Colors.red,
-          handleColor: Colors.redAccent,
-        ),
-        topActions: [
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              widget.title,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title.isNotEmpty ? widget.title : 'YouTube Video'),
+        actions: [
           IconButton(
-            icon: const Icon(Icons.open_in_new_rounded, color: Colors.white, size: 20),
+            icon: const Icon(Icons.open_in_new_rounded),
+            tooltip: 'Open in YouTube',
             onPressed: _openYouTubeApp,
           ),
         ],
       ),
-      builder: (context, player) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title.isNotEmpty ? widget.title : 'YouTube Video'),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.open_in_new_rounded),
-                tooltip: 'Open in YouTube App',
-                onPressed: _openYouTubeApp,
-              ),
-            ],
-          ),
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Native mobile player with progress indicator & full controls
-                Container(
-                  color: Colors.black,
-                  child: player,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Embedded YouTube Player (v6.x)
+            YoutubePlayer(
+              controller: _controller,
+              aspectRatio: 16 / 9,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (widget.title.isNotEmpty) ...[
+                    Text(
+                      widget.title,
+                      style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                  Row(
                     children: [
-                      if (widget.title.isNotEmpty) ...[
-                        Text(
-                          widget.title,
-                          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 12),
-                      ],
-                      Row(
-                        children: [
-                          OutlinedButton.icon(
-                            onPressed: _openYouTubeApp,
-                            icon: const Icon(Icons.play_circle_fill_rounded, color: Colors.red),
-                            label: const Text('Watch on YouTube App'),
-                          ),
-                        ],
+                      OutlinedButton.icon(
+                        onPressed: _openYouTubeApp,
+                        icon: const Icon(Icons.play_circle_fill_rounded, color: Colors.red),
+                        label: const Text('Watch on YouTube App'),
                       ),
                     ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 }
